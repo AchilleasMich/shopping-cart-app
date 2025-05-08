@@ -15,6 +15,7 @@ const ACTIONS = {
   ADD_TO_CART: "ADD_TO_CART",
   APPLY_COUPON: "APPLY_COUPON",
   ADD_COUPONS: "ADD_COUPONS",
+  CREATE_CART: "CREATE_CART",
 }
 
 const reducer = (state, { type, payload }) => {
@@ -23,36 +24,29 @@ const reducer = (state, { type, payload }) => {
       return { ...state, products: payload }
     case ACTIONS.ADD_TO_CART:
     {
+      const {
+        updatedCart, product: addedProduct,
+      } = payload;
       const product = state.products.find((p) => p.id === payload.id);
       if (product && product.stock === 0) return state;
 
+      // decrease products stock
       const updatedProducts = state.products.map((p) => 
-        p.id === payload.id ? { ...p, stock: p.stock - 1 } : p
+        p.id === addedProduct.id ? { ...p, stock: p.stock - 1 } : p
       );
 
-      let updatedCart;
-      const productInCart = state.cart.find((item) => item.id === payload.id);
-      if (productInCart) {
-        updatedCart = state.cart.map((c) =>
-          c.id === payload.id ? { ...c, quantity: c.quantity + 1 } : c
-        );
-      } else {
-        updatedCart = [
-          ...state.cart,
-          {
-            id: payload.id,
-            name: payload.name,
-            price: payload.price,
-            quantity: 1
-          }
-        ];
-      }
+      // enrich the cart with product info
+      const newCart = updatedCart.map(c => {
+        const prod = state.products.find((p) => p.id === c.product_id);
+        return { ...c, id: c.product_id, ...prod }
+      })
 
+      // apply coupon if it exists
       const coupon = state.coupons.find(c => c.code === state.cartInfo.coupon);
-      const totalAmount = calculateTotal(updatedCart, coupon);
+      const totalAmount = calculateTotal(newCart, coupon);
       return {
         ...state,
-        cart: updatedCart,
+        cart: newCart,
         products: updatedProducts,
         cartInfo: {
           ...state.cartInfo,
@@ -77,6 +71,14 @@ const reducer = (state, { type, payload }) => {
         ...state,
         coupons: payload
       }
+      case ACTIONS.CREATE_CART:
+        return {
+          ...state,
+          cartInfo: {
+            ...state.cartInfo,
+            id: payload,
+          }
+        }
     default:
       return state;
   }
