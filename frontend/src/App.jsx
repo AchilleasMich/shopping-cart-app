@@ -2,8 +2,10 @@ import React from 'react'
 import { useEffect, useReducer } from 'react'
 import { reducer, ACTIONS, initialState } from './state/reducers';
 import { useFetch } from './hooks/useFetch';
-import Products from './components/Products';
+import Products from './components/containers/Products';
 import Header from './components/Header';
+import { Route, Routes } from 'react-router';
+import Cart from './components/containers/Cart';
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -29,29 +31,41 @@ function App() {
 
   return (
     <div className="container mx-auto">
-      <div className='flex items-center justify-center bg-gray-200 p-4 m-2'>
+      <div className="flex items-center justify-center bg-gray-200 p-4 m-2">
         <div>
           <Header cart={state.cart} total={state.cartInfo.totalAmount} />
-          <div>
-            <label htmlFor="coupon">Apply Coupon:</label>
-            <select
-              id="coupon"
-              className="ml-2 p-1 border"
-              onChange={(e) => dispatch({ type: ACTIONS.APPLY_COUPON, payload: e.target.value })}
-            >
-              <option value="">Select a coupon</option>
-              {state?.coupons?.map((coupon) => (
-                <option key={coupon.code} value={coupon.code}>
-                  {coupon.code}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
       </div>
-      <Products products={state.products} isLoading={isLoading} error={error} addToCart={addToCart} />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Products
+              products={state.products}
+              isLoading={isLoading}
+              error={error}
+              addToCart={addToCart}
+            />
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              cart={state.cart}
+              coupons={state.coupons}
+              onSelection={(e) =>
+                dispatch({
+                  type: ACTIONS.APPLY_COUPON,
+                  payload: e.target.value,
+                })
+              }
+            />
+          }
+        />
+      </Routes>
     </div>
-  )
+  );
 }
 
 export default App

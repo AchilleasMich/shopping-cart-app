@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ProductCard from './ProductCard';
-import Loading from './ui/Loading';
-import Error from './ui/Error';
+import ProductCard from '../ProductCard';
+import Loading from '../ui/Loading';
+import Error from '../ui/Error';
 
 function Products(props) {
   const { products, isLoading, error, addToCart } = props
