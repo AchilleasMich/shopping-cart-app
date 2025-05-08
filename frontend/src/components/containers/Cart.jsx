@@ -2,14 +2,19 @@ import React from 'react'
 import Button from '../ui/Button';
 import { useShoppingCartContext } from '../../state/ShoppingCartContext.jsx';
 import { ACTIONS } from "../../state/reducers.js";
+import { useNavigate } from 'react-router';
 
 function Cart() {
   const { state, dispatch } = useShoppingCartContext();
   const { cart, coupons, cartInfo } = state;
+  const navigate = useNavigate();
+
+  if (cart.length === 0) navigate("/")
+
   return (
-    <div className="container mx-auto max-w-3xl m-2 p-2">
+    <div className="container mx-auto max-w-2xl m-2 p-2">
       <h2 className="text-xl font-bold">Checkout</h2>
-      <div className="flex flex-col lg:flex-row justify-center lg:justify-between bg-gray-200 p-4">
+      <div className="flex flex-col justify-center bg-gray-200 p-4">
         <div className="w-full">
         {cart.map((item) => (
           <div
@@ -41,7 +46,8 @@ function Cart() {
             </select>
           </div>
           <div>Total: ${(cartInfo.totalAmount/100).toFixed(2)}</div>
-          <Button className="w-full">Proceed</Button>
+          <Button fullWidth>Proceed</Button>
+          <Button fullWidth variant="tertiary" onClick={() => navigate("/")}>Continue shopping</Button>
         </div>
       </div>
     </div>

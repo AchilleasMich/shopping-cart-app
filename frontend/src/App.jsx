@@ -31,11 +31,7 @@ function App() {
 
   return (
     <div className="container mx-auto">
-      <div className="flex items-center justify-center bg-gray-200 p-4 m-2">
-        <div>
-          <Header cart={state.cart} total={state.cartInfo.totalAmount} />
-        </div>
-      </div>
+      <Header cart={state.cart} total={state.cartInfo.totalAmount} />
       <Routes>
         <Route
           path="/"

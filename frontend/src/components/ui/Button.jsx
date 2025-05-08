@@ -1,15 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-function Button({ onClick, children, disabled, className, variant, ...rest }) {
-  const baseStyles = 'px-4 py-2 mt-2 text-white';
+function Button({ onClick, children, disabled, className, variant, fullWidth, ...rest }) {
+  const baseStyles = 'px-4 py-2 mt-2 rounded';
   const variantStyles = variant === 'secondary'
-    ? 'bg-green-500 hover:bg-green-700 disabled:bg-green-300'
-    : 'bg-blue-500 hover:bg-blue-700 disabled:bg-blue-300';
+    ? 'bg-green-500 hover:bg-green-700 disabled:bg-green-300 text-white'
+    : variant === 'tertiary'
+    ? 'bg-white hover:bg-blue-100 blue-500 text-blue-700 border border-blue-500'
+    : 'bg-blue-500 hover:bg-blue-700 disabled:bg-blue-300 text-white';
+  const fullWidthStyles = fullWidth ? 'w-full' : '';
 
   return (
     <button
-      className={`${baseStyles} ${variantStyles} ${className}`}
+      className={`${baseStyles} ${variantStyles} ${fullWidthStyles} ${className}`}
       onClick={onClick}
       disabled={disabled}
       {...rest}
@@ -24,13 +27,15 @@ Button.propTypes = {
   children: PropTypes.node.isRequired,
   disabled: PropTypes.bool,
   className: PropTypes.string,
-  variant: PropTypes.oneOf(['primary', 'secondary']),
+  variant: PropTypes.oneOf(['primary', 'secondary', 'tertiary']),
+  fullWidth: PropTypes.bool,
 };
 
 Button.defaultProps = {
   disabled: false,
   className: '',
   variant: 'primary',
+  fullWidth: false,
 };
 
 export default Button;

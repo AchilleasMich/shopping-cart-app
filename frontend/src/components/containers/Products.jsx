@@ -13,13 +13,15 @@ function Products(props) {
   const { products } = state;
   const addToCart = (product) => { dispatch({ type: ACTIONS.ADD_TO_CART, payload: product })};
   return (
-    <div>
-    {isLoading ? <Loading /> : null}
-    {!isLoading && !error && products?.map((product) => (
-      <ProductCard key={product.id} product={product} addToCart={addToCart} />
-    ))}
-    {error && <Error />}
-  </div>
+    <div className="flex justify-center">
+      <div className='flex flex-col md:flex-row flex-wrap gap-1 md:gap-2 w-full md:w-fit'>
+        {isLoading ? <Loading /> : null}
+        {!isLoading && !error && products?.map((product) => (
+          <ProductCard key={product.id} product={product} addToCart={addToCart} />
+        ))}
+        {error && <Error />}
+      </div>
+    </div>
   )
 }
 
