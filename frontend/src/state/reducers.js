@@ -1,9 +1,11 @@
+import { calculateTotal } from "../utilities/discounts"
 const initialState = {
   cart: [],
   products: [],
   cartInfo: {
     id: null,
     coupon: null,
+    totalAmount: 0,
   },
   coupons: []
 }
@@ -22,28 +24,20 @@ const reducer = (state, { type, payload }) => {
     case ACTIONS.ADD_TO_CART:
     {
       const product = state.products.find((p) => p.id === payload.id);
-      if (product && product.stock === 0)
-        return state;
+      if (product && product.stock === 0) return state;
 
-      const newProducts = state.products.map((p) => {
-        if (p.id === payload.id) {
-          return { ...p, stock: p.stock - 1 };
-        }
-        return p;
-      })
+      const updatedProducts = state.products.map((p) => 
+        p.id === payload.id ? { ...p, stock: p.stock - 1 } : p
+      );
+
+      let updatedCart;
       const productInCart = state.cart.find((item) => item.id === payload.id);
       if (productInCart) {
-        const newCart = state.cart.map((c) => {
-          if (c.id === payload.id)
-            return { ...c, quantity: c.quantity + 1 };
-          return c;
-        })
-
-        return { ...state, cart: newCart, products: newProducts}
-      }
-      return {
-        ...state,
-        cart: [
+        updatedCart = state.cart.map((c) =>
+          c.id === payload.id ? { ...c, quantity: c.quantity + 1 } : c
+        );
+      } else {
+        updatedCart = [
           ...state.cart,
           {
             id: payload.id,
@@ -51,17 +45,33 @@ const reducer = (state, { type, payload }) => {
             price: payload.price,
             quantity: 1
           }
-        ],
-        products: newProducts };
+        ];
       }
-    case ACTIONS.APPLY_COUPON:
+
+      const coupon = state.coupons.find(c => c.code === state.cartInfo.coupon);
+      const totalAmount = calculateTotal(updatedCart, coupon);
+      return {
+        ...state,
+        cart: updatedCart,
+        products: updatedProducts,
+        cartInfo: {
+          ...state.cartInfo,
+          totalAmount: totalAmount
+        }
+      };
+    }
+    case ACTIONS.APPLY_COUPON: {
+      const coupon = state.coupons.find(c => c.code === payload);
+      const totalAmount = calculateTotal(state.cart, coupon);
       return {
         ...state,
         cartInfo: {
           ...state.cartInfo,
-          coupon: payload
+          coupon: payload,
+          totalAmount: totalAmount
         }
       }
+    }
     case ACTIONS.ADD_COUPONS:
       return {
         ...state,

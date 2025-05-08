@@ -1,4 +1,5 @@
 export const calculateTotal = (cart, coupon = {}) => {
+  if (!cart || cart.length === 0) return 0;
   const total = cart.reduce((acc, c) => acc += c.price * c.quantity, 0);
 
   if (!coupon) return total;

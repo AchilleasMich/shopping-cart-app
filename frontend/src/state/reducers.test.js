@@ -51,4 +51,90 @@ describe("reducer", () => {
         expect(result.cart).toStrictEqual([])
         expect(result.products[0].stock).toBe(0);
     });
+
+    it("should handle APPLY_COUPON action", () => {
+        const state = {
+            ...initialState,
+            coupons: [{ code: "DISCOUNT10", type: "PERCENTAGE", amount: 10 }],
+        };
+        const result = reducer(state, { type: ACTIONS.APPLY_COUPON, payload: "DISCOUNT10" });
+        expect(result.cartInfo.coupon).toBe("DISCOUNT10");
+    });
+
+    it("should handle ADD_COUPONS action", () => {
+        const coupons = [{ code: "DISCOUNT10", type: "PERCENTAGE", amount: 10 }];
+        const result = reducer(initialState, { type: ACTIONS.ADD_COUPONS, payload: coupons });
+        expect(result.coupons).toEqual(coupons);
+    });
+
+    it("should handle ADD_PRODUCTS action with an empty payload", () => {
+      const result = reducer(initialState, { type: ACTIONS.ADD_PRODUCTS, payload: [] });
+      expect(result.products).toEqual([]);
+    });
+
+    it("should handle ADD_TO_CART action when adding multiple products", () => {
+      const state = {
+        ...initialState,
+        products: [
+          { id: 1, name: "Product 1", stock: 10, price: 100 },
+          { id: 2, name: "Product 2", stock: 5, price: 200 },
+        ],
+      };
+      const productToAdd = { id: 1, name: "Product 1", price: 100 };
+      const result = reducer(state, { type: ACTIONS.ADD_TO_CART, payload: productToAdd });
+
+      expect(result.cart).toEqual([{ id: 1, name: "Product 1", price: 100, quantity: 1 }]);
+      expect(result.products[0].stock).toBe(9);
+    });
+
+    it("should handle APPLY_COUPON action with an invalid coupon", () => {
+      const state = {
+        ...initialState,
+        coupons: [{ code: "DISCOUNT10", type: "PERCENTAGE", amount: 10 }],
+      };
+      const result = reducer(state, { type: ACTIONS.APPLY_COUPON, payload: "INVALID_COUPON" });
+      expect(result.cartInfo.coupon).toBe("INVALID_COUPON");
+      expect(result.cartInfo.totalAmount).toBe(0);
+    });
+
+    it("should handle ADD_TO_CART action without a coupon and calculate total amount", () => {
+        const state = {
+            ...initialState,
+            products: [{ id: 1, name: "Product 1", stock: 10, price: 50 }],
+        };
+        const productToAdd = { id: 1, name: "Product 1", price: 50 };
+        const result = reducer(state, { type: ACTIONS.ADD_TO_CART, payload: productToAdd });
+
+        expect(result.cart).toEqual([{ id: 1, name: "Product 1", price: 50, quantity: 1 }]);
+        expect(result.products[0].stock).toBe(9);
+        expect(result.cartInfo.totalAmount).toBe(50);
+    });
+
+    it("should handle ADD_TO_CART action with a coupon and calculate total amount", () => {
+        const state = {
+            ...initialState,
+            products: [{ id: 1, name: "Product 1", stock: 10, price: 100 }],
+            coupons: [{ code: "DISCOUNT10", type: "PERCENTAGE", amount: 10 }],
+            cartInfo: { ...initialState.cartInfo, coupon: "DISCOUNT10" },
+        };
+        const productToAdd = { id: 1, name: "Product 1", price: 100 };
+        const result = reducer(state, { type: ACTIONS.ADD_TO_CART, payload: productToAdd });
+
+        expect(result.cart).toEqual([{ id: 1, name: "Product 1", price: 100, quantity: 1 }]);
+        expect(result.products[0].stock).toBe(9);
+        expect(result.cartInfo.totalAmount).toBe(90); // 10% discount applied
+    });
+
+    it("should handle APPLY_COUPON action on an existing cart and calculate total amount", () => {
+        const state = {
+            ...initialState,
+            cart: [{ id: 1, name: "Product 1", price: 100, quantity: 2 }],
+            coupons: [{ code: "DISCOUNT20", type: "PERCENTAGE", amount: 20 }],
+        };
+        const result = reducer(state, { type: ACTIONS.APPLY_COUPON, payload: "DISCOUNT20" });
+
+        expect(result.cartInfo.coupon).toBe("DISCOUNT20");
+        expect(result.cartInfo.totalAmount).toBe(160); // 20% discount applied to 200
+    });
+
 });
