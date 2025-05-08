@@ -1,11 +1,18 @@
 const initialState = {
   cart: [],
   products: [],
+  cartInfo: {
+    id: null,
+    coupon: null,
+  },
+  coupons: []
 }
 
 const ACTIONS = {
   ADD_PRODUCTS: "ADD_PRODUCTS",
   ADD_TO_CART: "ADD_TO_CART",
+  APPLY_COUPON: "APPLY_COUPON",
+  ADD_COUPONS: "ADD_COUPONS",
 }
 
 const reducer = (state, { type, payload }) => {
@@ -15,7 +22,6 @@ const reducer = (state, { type, payload }) => {
     case ACTIONS.ADD_TO_CART:
     {
       const product = state.products.find((p) => p.id === payload.id);
-      console.log(product)
       if (product && product.stock === 0)
         return state;
 
@@ -25,12 +31,11 @@ const reducer = (state, { type, payload }) => {
         }
         return p;
       })
-      
       const productInCart = state.cart.find((item) => item.id === payload.id);
       if (productInCart) {
         const newCart = state.cart.map((c) => {
           if (c.id === payload.id)
-            return { ...c, quantity: c.quantity += 1 };
+            return { ...c, quantity: c.quantity + 1 };
           return c;
         })
 
@@ -48,6 +53,19 @@ const reducer = (state, { type, payload }) => {
           }
         ],
         products: newProducts };
+      }
+    case ACTIONS.APPLY_COUPON:
+      return {
+        ...state,
+        cartInfo: {
+          ...state.cartInfo,
+          coupon: payload
+        }
+      }
+    case ACTIONS.ADD_COUPONS:
+      return {
+        ...state,
+        coupons: payload
       }
     default:
       return state;

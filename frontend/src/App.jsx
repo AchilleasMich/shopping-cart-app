@@ -1,25 +1,30 @@
 import { useEffect, useReducer } from 'react'
 import { reducer, ACTIONS, initialState } from './state/reducers';
+import { useFetch } from './hooks/useFetch';
+import { calculateTotal } from './utilities/discounts';
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const { data, isLoading, error } = useFetch("/api/products")
+  const { data: coupons } = useFetch("/api/discounts");
+
   useEffect(() => {
-    async function fetchProducts() {
-      const resp = await fetch('/api/products');
-      const data = await resp.json();
-      const products = data.map((p) => { return {...p, price: p.price * 100 } });
+    if (data) {
+      const products = data.map(p => { return { ...p, price: Math.round(100 * p.price) }})
       dispatch({ type: ACTIONS.ADD_PRODUCTS, payload: products });
     }
-    fetchProducts();
-  }, []);
+  }, [data]);
 
+  useEffect(() => {
+    if (coupons) {
+      const c = coupons.map(c => { return { ...c, amount: c.type === "FLAT" ? 100 * c.amount : c.amount }})
+      dispatch({ type: ACTIONS.ADD_COUPONS, payload: c });
+    }
+  }, [coupons]);
 
   const addToCart = (product) => { dispatch({ type: ACTIONS.ADD_TO_CART, payload: product }) };
-
-  const total = state?.cart.reduce((acc, c) => acc += c.price * c.quantity, 0);
-
-  console.log(state)
+  const total = calculateTotal(state?.cart, state?.coupons?.find(c => c.code === state?.cartInfo?.coupon));
 
   return (
     <div className="container mx-auto">
@@ -28,10 +33,26 @@ function App() {
           <p>Cart</p>
           <p>Quantity: {state?.cart.reduce((acc, c) => acc += c.quantity, 0)}</p>
           <p>Total: ${(total/100).toFixed(2)}</p>
+          <div>
+            <label htmlFor="coupon">Apply Coupon:</label>
+            <select
+              id="coupon"
+              className="ml-2 p-1 border"
+              onChange={(e) => dispatch({ type: ACTIONS.APPLY_COUPON, payload: e.target.value })}
+            >
+              <option value="">Select a coupon</option>
+              {state?.coupons?.map((coupon) => (
+                <option key={coupon.code} value={coupon.code}>
+                  {coupon.code}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       <div>
-        {state?.products?.map((product) => (
+        {isLoading ? <div>Is Loading</div> : null}
+        {!isLoading && !error && state?.products?.map((product) => (
           <div key={product.id} className="border p-4 m-2">
             <h2 className="text-xl font-bold">{product.name}</h2>
             <p>{product.stock ? "In Stock" : "Not in Stock"}</p>
@@ -45,6 +66,7 @@ function App() {
             </button>
           </div>
         ))}
+        {error && <div>Oops</div>}
       </div>
     </div>
   )
