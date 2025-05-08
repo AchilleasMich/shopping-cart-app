@@ -1,14 +1,15 @@
 import React from 'react'
-import { useEffect, useReducer } from 'react'
-import { reducer, ACTIONS, initialState } from './state/reducers';
+import { useEffect } from 'react'
+import {  ACTIONS } from './state/reducers';
 import { useFetch } from './hooks/useFetch';
 import Products from './components/containers/Products';
 import Header from './components/Header';
 import { Route, Routes } from 'react-router';
 import Cart from './components/containers/Cart';
+import { useShoppingCartContext } from './state/ShoppingCartContext';
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { state, dispatch } = useShoppingCartContext();
 
   const { data, isLoading, error } = useFetch("/api/products")
   const { data: coupons } = useFetch("/api/discounts");
@@ -27,7 +28,6 @@ function App() {
     }
   }, [coupons]);
 
-  const addToCart = (product) => { dispatch({ type: ACTIONS.ADD_TO_CART, payload: product })};
 
   return (
     <div className="container mx-auto">
@@ -39,30 +39,9 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            <Products
-              products={state.products}
-              isLoading={isLoading}
-              error={error}
-              addToCart={addToCart}
-            />
-          }
+          element={<Products isLoading={isLoading} error={error} />}
         />
-        <Route
-          path="/cart"
-          element={
-            <Cart
-              cart={state.cart}
-              coupons={state.coupons}
-              onSelection={(e) =>
-                dispatch({
-                  type: ACTIONS.APPLY_COUPON,
-                  payload: e.target.value,
-                })
-              }
-            />
-          }
-        />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
   );
