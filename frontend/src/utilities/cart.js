@@ -31,3 +31,14 @@ export const addProductToCart = async (cartId, newCart) => {
   const updatedCart = await res.json();
   return updatedCart;
 }
+
+export const createNewCart = (existingCart, productToAdd) => {
+  const itemInCart = existingCart.find(c => c.id === productToAdd.id)
+  const newCart = itemInCart
+    ? existingCart.map((c) =>
+        c.id === productToAdd.id ? { ...c, quantity: c.quantity + 1 } : c
+      )
+    : [...existingCart, { product_id: productToAdd.id, quantity: 1 }];
+  
+  return newCart;
+}

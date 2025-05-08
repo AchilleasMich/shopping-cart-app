@@ -7,6 +7,7 @@ import Header from './components/Header';
 import { Route, Routes } from 'react-router';
 import Cart from './components/containers/Cart';
 import { useShoppingCartContext } from './state/ShoppingCartContext';
+import Order from './components/containers/Order';
 
 function App() {
   const { state, dispatch } = useShoppingCartContext();
@@ -28,7 +29,7 @@ function App() {
     }
   }, [coupons]);
 
-
+  console.log(state)
   return (
     <div className="container mx-auto">
       <Header cart={state.cart} total={state.cartInfo.totalAmount} />
@@ -38,6 +39,7 @@ function App() {
           element={<Products isLoading={isLoading} error={error} />}
         />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/order" element={<Order />} />
       </Routes>
     </div>
   );

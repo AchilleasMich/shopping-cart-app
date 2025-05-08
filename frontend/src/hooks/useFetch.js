@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-export const useFetch = (url) => {
+// doNotRun a hacky way to avoid breaking rules of hooks
+export const useFetch = (url, doNotRun = false) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -13,7 +14,8 @@ export const useFetch = (url) => {
         const json = await resp.json();
         setData(json);
         setIsLoading(false);
-      } catch {
+      } catch (error) {
+        console.error(error)
         setError("Failed to get data");
         setIsLoading(false);
       } finally {
@@ -21,7 +23,7 @@ export const useFetch = (url) => {
       }
     }
 
-    if (!url) return;
+    if (!url || doNotRun) return;
     getData();
   }, [url]);
 

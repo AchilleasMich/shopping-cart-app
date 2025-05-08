@@ -3,6 +3,7 @@ import Button from '../ui/Button';
 import { useShoppingCartContext } from '../../state/ShoppingCartContext.jsx';
 import { ACTIONS } from "../../state/reducers.js";
 import { useNavigate } from 'react-router';
+import { submitOrder } from '../../utilities/orders.js';
 
 function Cart() {
   const { state, dispatch } = useShoppingCartContext();
@@ -10,6 +11,17 @@ function Cart() {
   const navigate = useNavigate();
 
   if (cart.length === 0) navigate("/")
+
+  const createOrder = async () => {
+    const orderId = await submitOrder(state.cartInfo.id, state.cartInfo.coupon);
+
+    // The else is required to avoid instanity
+    if (orderId) {
+      navigate("/order", { state: { orderId } });
+    } else {
+      navigate("/order")
+    }
+  }
 
   return (
     <div className="container mx-auto max-w-2xl m-2 p-2">
@@ -46,7 +58,7 @@ function Cart() {
             </select>
           </div>
           <div>Total: ${(cartInfo.totalAmount/100).toFixed(2)}</div>
-          <Button fullWidth>Proceed</Button>
+          <Button fullWidth onClick={createOrder}>Proceed</Button>
           <Button fullWidth variant="tertiary" onClick={() => navigate("/")}>Continue shopping</Button>
         </div>
       </div>
