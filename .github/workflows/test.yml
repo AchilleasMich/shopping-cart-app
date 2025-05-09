@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🐳 Build dev image
-        run: docker build -f frontend/Dockerfile.dev -t vite-test .
+      - name: Build dev image
+        run: docker build -f frontend/Dockerfile.dev -t shopping-cart-app ./frontend
 
-      - name: 🧪 Run tests in container
-        run: docker run --rm vite-test npm run test
+      - name: Run tests in container
+        run: docker run --rm shopping-cart-app npm run test
