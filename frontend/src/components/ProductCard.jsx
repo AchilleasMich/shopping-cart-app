@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import QuantityButton from './ui/Buttons/QuantityButton';
-
 function ProductCard(props) {
   const { product, addToCart, removeFromCart } = props;
   return (

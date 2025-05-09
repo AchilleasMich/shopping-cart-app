@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Button({ onClick, children, disabled, className, variant, fullWidth, ...rest }) {
-  const baseStyles = 'px-4 py-2 mt-2 rounded';
+  const baseStyles = 'px-4 py-2 mt-2 rounded rounded-lg shadow-md';
   const variantStyles = variant === 'secondary'
-    ? 'bg-green-500 hover:bg-green-700 disabled:bg-green-300 text-white'
+    ? 'bg-secondary hover:bg-secondary-hover disabled:bg-secondary-disabled text-secondary-text'
     : variant === 'tertiary'
-    ? 'bg-white hover:bg-blue-100 blue-500 text-blue-700 border border-blue-500'
-    : 'bg-blue-500 hover:bg-blue-700 disabled:bg-blue-300 text-white';
+    ? 'bg-tertiary hover:bg-tertiary-hover text-tertiary-text border border-tertiary-border'
+    : 'bg-primary hover:bg-primary-hover disabled:bg-primary-disabled text-primary-text';
   const fullWidthStyles = fullWidth ? 'w-full' : '';
 
   return (

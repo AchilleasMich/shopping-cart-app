@@ -7,10 +7,10 @@ const QuantityButton = (props) => {
   const { quantity, onIncrease, onDecrease, increamentEnabled, variant, children, ...rest } = props;
   const baseStyles = "px-4 py-2 mt-2"
   const variantStyles = variant === 'secondary'
-    ? 'bg-green-300 text-white'
+    ? 'bg-secondary text-white'
     : variant === 'tertiary'
-    ? 'bg-white hover:bg-blue-100 blue-500 text-blue-700 border border-blue-500'
-    : 'bg-blue-300 text-white';
+    ? 'bg-tertiary hover:bg-tertiary-hover text-tertiary border border-tertiary'
+    : 'bg-primary text-white';
   if (!increamentEnabled)
     return <Button onClick={onIncrease} variant={variant} {...rest}>{children}</Button>
 
