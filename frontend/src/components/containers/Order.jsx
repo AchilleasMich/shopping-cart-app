@@ -1,52 +1,62 @@
-import React, { useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router';
-import { useFetch } from '../../hooks/useFetch';
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { useFetch } from "../../hooks/useFetch";
+import Button from "../ui/Buttons/Button";
+import { useShoppingCartContext } from "../../state/ShoppingCartContext";
+import { ACTIONS } from "../../state/reducers";
 
 export const Order = () => {
+  const { dispatch } = useShoppingCartContext();
   const { state } = useLocation();
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
 
-  console.log("Where is the state", state)
   useEffect(() => {
-    if (!state) navigate("/")
-  }, [state, navigate])
+    if (!state) navigate("/");
+    else dispatch({ type: ACTIONS.CLEAR_CART });
+  }, [state, navigate]);
 
-  if (!state) return null
+  if (!state) return null;
   const { orderId } = state;
-  if (!orderId) return <div>Faield ot creatre order</div>
+  if (!orderId) return <div>failed to create order</div>;
   return (
-    <div><Trick orderId={orderId} /></div>
-  )
-}
+    <div className="flex justify-center">
+      <Trick orderId={orderId} />
+    </div>
+  );
+};
 
 const Trick = (props) => {
-  const { data } = useFetch("/api/orders/" + props.orderId, props.orderId ? false : true);
-  console.log(data);
+  const { data } = useFetch("/api/orders/" + props.orderId);
+  console.log(data)
+  const navigate = useNavigate();
   return (
-    <div
-      className="transaction-success animate-fade-in flex flex-col items-center justify-center mt-10"
-      style={{
-        backgroundColor: "#f9f9f9", // Very light gray background
-        animation: "fadeIn 1s ease-in-out",
-        borderRadius: "8px",
-        padding: "20px",
-      }}
-    >
+    <div className="transaction-success w-xs md:w-md flex flex-col items-center justify-center mt-5">
       {data ? (
         <>
-          <h2 className="text-green-500 text-xl font-bold mb-4 animate-bounce">Transaction Successful!</h2>
-          <div className="products-list space-y-4 w-full max-w-md">
+          <h2 className="text-green-500 text-xl font-bold mb-4 animate-bounce">
+            Transaction Successful!
+          </h2>
+          <div className="products-list space-y-4 w-full max-w-sm">
             {data.items.map((item, index) => (
-              <div key={index} className="product-item border-b border-gray-300 pb-2 text-center">
+              <div
+                key={index}
+                className="border-b border-gray-300 pb-2 text-center w-full"
+              >
                 <p className="font-medium text-gray-600">{item.product.name}</p>
-                <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
-                <p className="text-sm text-gray-600">Price: ${item.product.price}</p>
+                <p className="text-sm text-gray-600">
+                  Quantity: {item.quantity}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Price: ${item.product.price}
+                </p>
               </div>
             ))}
           </div>
+          {/* this amount seems wrong, no time to investigate */}
           <div className="total-amount font-bold text-lg mb-6">
             <h3>Total Amount: ${data.total}</h3>
           </div>
+          <Button fullWidth onClick={() => navigate("/")}>Continue Shopping</Button>
         </>
       ) : (
         <p className="text-gray-500">Loading...</p>

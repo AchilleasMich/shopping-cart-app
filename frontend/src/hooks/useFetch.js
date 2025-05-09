@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
-// doNotRun a hacky way to avoid breaking rules of hooks
-export const useFetch = (url, doNotRun = false) => {
+export const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -23,7 +22,7 @@ export const useFetch = (url, doNotRun = false) => {
       }
     }
 
-    if (!url || doNotRun) return;
+    if (!url) return;
     getData();
   }, [url]);
 

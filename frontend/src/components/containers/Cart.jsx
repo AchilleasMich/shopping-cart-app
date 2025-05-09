@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../ui/Button';
+import Button from '../ui/Buttons/Button.jsx';
 import { useShoppingCartContext } from '../../state/ShoppingCartContext.jsx';
 import { ACTIONS } from "../../state/reducers.js";
 import { useNavigate } from 'react-router';
@@ -14,7 +14,6 @@ function Cart() {
 
   const createOrder = async () => {
     const orderId = await submitOrder(state.cartInfo.id, state.cartInfo.coupon);
-
     // The else is required to avoid instanity
     if (orderId) {
       navigate("/order", { state: { orderId } });

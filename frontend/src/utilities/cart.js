@@ -13,7 +13,7 @@ export const createCart = async () => {
   }
 }
 
-export const addProductToCart = async (cartId, newCart) => {
+export const updateCart = async (cartId, newCart) => {
   const res = await fetch(`/api/carts/${cartId}/`, {
     method: 'PUT',
     headers: {
@@ -32,7 +32,7 @@ export const addProductToCart = async (cartId, newCart) => {
   return updatedCart;
 }
 
-export const createNewCart = (existingCart, productToAdd) => {
+export const addItemToCart = (existingCart, productToAdd) => {
   const itemInCart = existingCart.find(c => c.id === productToAdd.id)
   const newCart = itemInCart
     ? existingCart.map((c) =>
@@ -42,3 +42,19 @@ export const createNewCart = (existingCart, productToAdd) => {
   
   return newCart;
 }
+
+export const removeItemFromCart = (existingCart, product) => {
+  const itemInCart = existingCart.find(c => c.id === product.id);
+
+  if (!itemInCart) {
+    return existingCart; // If the item is not in the cart, return the cart as is
+  }
+
+  const newCart = itemInCart.quantity > 1
+    ? existingCart.map((c) =>
+        c.id === product.id ? { ...c, quantity: c.quantity - 1 } : c
+      )
+    : existingCart.filter(c => c.id !== product.id);
+
+  return newCart;
+};

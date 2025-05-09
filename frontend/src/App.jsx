@@ -29,7 +29,6 @@ function App() {
     }
   }, [coupons]);
 
-  console.log(state)
   return (
     <div className="container mx-auto">
       <Header cart={state.cart} total={state.cartInfo.totalAmount} />
