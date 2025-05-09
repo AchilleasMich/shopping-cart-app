@@ -1,9 +1,12 @@
 import React from 'react'
 import Button from '../ui/Buttons/Button.jsx';
+import CartCard from '../CartCard.jsx';
 import { useShoppingCartContext } from '../../state/ShoppingCartContext.jsx';
 import { ACTIONS } from "../../state/reducers.js";
 import { useNavigate } from 'react-router';
 import { submitOrder } from '../../utilities/orders.js';
+import Price from '../ui/Price.jsx';
+import Select from '../ui/Select.jsx';
 
 function Cart() {
   const { state, dispatch } = useShoppingCartContext();
@@ -22,43 +25,52 @@ function Cart() {
     }
   }
 
+  const handleCouponChange = (e) => 
+    dispatch({
+      type: ACTIONS.APPLY_COUPON,
+      payload: e.target.value,
+    })
+
+  const couponCodes = coupons?.map((coupon) => coupon.code);
+
   return (
     <div className="container mx-auto max-w-2xl m-2 p-2">
-      <h2 className="text-xl font-bold">Checkout</h2>
-      <div className="flex flex-col justify-center bg-gray-200 p-4">
+      <h2 className="text-xl font-bold mb-4">Checkout</h2>
+      <div className="bg-gray-100 p-6 rounded-lg shadow-md">
         <div className="w-full">
-        {cart.map((item) => (
-          <div
-            key={item.id}
-            className="border p-4 m-2 flex justify-between"
-          >
-            <div className="text-xl justify-center font-bold">{item.name}</div>
-            <div>
-              <p>Quantity: {item.quantity}</p>
-              <p>Price: ${((item.price * item.quantity) / 100).toFixed(2)}</p>
-            </div>
-          </div>
-        ))}
+          {cart.map((item) => (
+            <CartCard
+              key={item.id}
+              name={item.name}
+              quantity={item.quantity}
+              price={item.price}
+            />
+          ))}
         </div>
-        <div className="flex flex-col items-end p-4">
-          <div>
-            <label htmlFor="coupon">Apply Coupon:</label>
-            <select id="coupon" className="ml-2 p-1 border" onChange={(e) =>
-                dispatch({
-                  type: ACTIONS.APPLY_COUPON,
-                  payload: e.target.value,
-                })}>
-              <option value="">Select a coupon</option>
-              {coupons?.map((coupon) => (
-                <option key={coupon.code} value={coupon.code}>
-                  {coupon.code}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>Total: ${(cartInfo.totalAmount/100).toFixed(2)}</div>
-          <Button fullWidth onClick={createOrder}>Proceed</Button>
-          <Button fullWidth variant="tertiary" onClick={() => navigate("/")}>Continue shopping</Button>
+        <Select
+          text="Apply Coupon"
+          onChange={handleCouponChange}
+          value={state.cartInfo.coupon}
+          options={couponCodes}
+          defaultOption={"Select a coupon"}
+        />
+        <div className="flex flex-col items-end mt-2">
+          <Price text="Total" price={cartInfo.totalAmount} variant="bold" />
+          <Button
+            fullWidth
+            className="mb-2 bg-blue-500 text-white hover:bg-blue-600"
+            onClick={createOrder}
+          >
+            Proceed
+          </Button>
+          <Button
+            fullWidth
+            variant="tertiary"
+            className="text-blue-500 hover:underline"
+            onClick={() => navigate("/")}
+          >
+            Continue shopping
+          </Button>
         </div>
       </div>
     </div>

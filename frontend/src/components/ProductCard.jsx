@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import QuantityButton from './ui/Buttons/QuantityButton';
-function ProductCard(props) {
+import Price from './ui/Price';
+
+const ProductCard = (props) => {
   const { product, addToCart, removeFromCart } = props;
   return (
     <div key={product.id} className="border p-4 m-2 min-w-fit md:min-w-48">
       <h2 className="text-xl font-bold">{product.name}</h2>
       <p>{product.stock ? "In Stock" : "Not in Stock"}</p>
-      <p className="text-green-500">${product.price / 100}</p>
+      <Price text="Price" price={product.price} variant="procuct" />
       <QuantityButton
         fullWidth
         quantity={product.stock}
