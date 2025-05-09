@@ -15,7 +15,9 @@ function ProductCard(props) {
         onIncrease={() => addToCart(product)}
         onDecrease={() => removeFromCart(product)}
         increamentEnabled={product.inCart}
-      >Add to Cart
+        disabled={product.stock === 0}
+      >
+        {product.stock ? "Add to Cart" : "Out of stock"}
       </QuantityButton>
     </div>
   );
