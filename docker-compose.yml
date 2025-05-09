@@ -1,10 +1,24 @@
 services:
-    api:
-        image: registry.gitlab.com/saysimpler/hiring/fe-sample-api
-        ports:
-            - "8080:8080"
-        networks:
-            - cart-network
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    expose:
+      - "80"
 
-networks:
-    cart-network:
+  api:
+    image: registry.gitlab.com/saysimpler/hiring/fe-sample-api
+    container_name: api
+    expose:
+      - "8080"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx/conf.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend
+      - api

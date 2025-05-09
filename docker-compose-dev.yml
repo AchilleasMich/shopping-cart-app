@@ -1,0 +1,10 @@
+services:
+    api:
+        image: registry.gitlab.com/saysimpler/hiring/fe-sample-api
+        ports:
+            - "8080:8080"
+        networks:
+            - cart-network
+
+networks:
+    cart-network:
