@@ -16,11 +16,11 @@ const QuantityButton = (props) => {
 
   return (
     <div className={`w-full flex items-center justify-between gap-0`}>
-      <Button onClick={onDecrease} variant={variant} className={"rounded-r-none"}>
+      <Button onClick={onDecrease} variant={variant} className={"rounded-r-none"} data-testid="decrease-button">
         −
       </Button>
       <span className={`flex-1 text-center font-medium ${baseStyles} ${variantStyles}`}>{quantity}</span>
-      <Button onClick={onIncrease} disabled={quantity === 0} variant={variant} className={"rounded-l-none"}>
+      <Button onClick={onIncrease} disabled={quantity === 0} variant={variant} className={"rounded-l-none"} data-testid="increase-button">
         +
       </Button>
     </div>

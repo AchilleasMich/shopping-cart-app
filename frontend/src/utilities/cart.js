@@ -9,7 +9,7 @@ export const createCart = async () => {
     const location = res.headers.get('Location');
     return location.split("/")[2]
   } catch {
-    console.log("failed")
+    console.error("failed")
   }
 }
 
@@ -24,7 +24,7 @@ export const updateCart = async (cartId, newCart) => {
 
   if (!res.ok) {
     const errorText = await res.text();
-    console.log(errorText)
+    console.error(errorText)
     return []
   }
 

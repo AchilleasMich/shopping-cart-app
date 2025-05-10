@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Price from "./ui/Price";
+import Price from "../Price";
 
 const CartCard = (props) => {
   const { quantity, price, name } = props;

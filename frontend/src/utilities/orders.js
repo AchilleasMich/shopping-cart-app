@@ -15,6 +15,6 @@ export const submitOrder = async (cartId, coupon) => {
     const location = res.headers.get('Location');
     return location.split("/")[2]
   } catch {
-    console.log("failed")
+    console.error("failed")
   }
 }

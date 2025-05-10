@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from '../ui/Buttons/Button.jsx';
-import CartCard from '../CartCard.jsx';
+import CartCard from '../ui/Cards/CartCard.jsx';
 import { useShoppingCartContext } from '../../state/ShoppingCartContext.jsx';
 import { ACTIONS } from "../../state/reducers.js";
 import { useNavigate } from 'react-router';
@@ -13,7 +13,11 @@ function Cart() {
   const { cart, coupons, cartInfo } = state;
   const navigate = useNavigate();
 
-  if (cart.length === 0) navigate("/")
+  useEffect(() => {
+    if (cart.length === 0) {
+      navigate("/");
+    }
+  }, [cart, navigate]);
 
   const createOrder = async () => {
     const orderId = await submitOrder(state.cartInfo.id, state.cartInfo.coupon);
@@ -21,7 +25,7 @@ function Cart() {
     if (orderId) {
       navigate("/order", { state: { orderId } });
     } else {
-      navigate("/order")
+      navigate("/order");
     }
   }
 

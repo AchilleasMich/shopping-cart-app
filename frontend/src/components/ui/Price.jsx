@@ -2,12 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const Price = (props) => {
-  const { text, price, variant } = props;
-
+  const { text = "Price", price, variant = "simple" } = props;
   if (variant === 'simple') {
     return (
       <div className="font-medium">
-        {text && `${text}:`} ${(price / 100).toFixed(2)}
+        <span>{text && `${text}:`} ${(price / 100).toFixed(2)}</span>
       </div>
     );
   }
@@ -31,11 +30,6 @@ Price.propTypes = {
   text: PropTypes.string,
   price: PropTypes.number,
   variant: PropTypes.oneOf(['simple', 'bold', 'procuct']),
-}
-
-Price.defaultProps = {
-  text: "Price",
-  variant: "simple",
 }
 
 export default Price;

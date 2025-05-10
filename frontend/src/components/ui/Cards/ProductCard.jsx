@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import QuantityButton from './ui/Buttons/QuantityButton';
-import Price from './ui/Price';
+import QuantityButton from '../Buttons/QuantityButton';
+import Price from '../Price';
 
 const ProductCard = (props) => {
   const { product, addToCart, removeFromCart } = props;
   return (
-    <div key={product.id} className="border p-4 m-2 min-w-fit md:min-w-48">
-      <h2 className="text-xl font-bold">{product.name}</h2>
-      <p>{product.stock ? "In Stock" : "Not in Stock"}</p>
-      <Price text="Price" price={product.price} variant="procuct" />
+    <div
+      key={product.id}
+      className="border p-4 m-2 min-w-fit md:min-w-52 lg:min-w-72 rounded-lg shadow-sm hover:shadow-lg transition-shadow transform hover:scale-105 hover:rotate-1 hover:-translate-y-1 duration-300"
+    >
+      <h2 className="text-xl font-bold mb-2 text-gray-800">{product.name}</h2>
+      <p className={`mb-2 ${product.stock ? "text-green-600" : "text-red-600"} font-medium`}>
+        {product.stock ? `In Stock (${product.stock})` : "Out of Stock"}
+      </p>
+      <Price text="Price" price={product.price} variant="product" />
       <QuantityButton
         fullWidth
         quantity={product.stock}
@@ -18,7 +23,7 @@ const ProductCard = (props) => {
         increamentEnabled={product.inCart}
         disabled={product.stock === 0}
       >
-        {product.stock ? "Add to Cart" : "Out of stock"}
+        {product.stock ? "Add to Cart" : "Not in Stock"}
       </QuantityButton>
     </div>
   );

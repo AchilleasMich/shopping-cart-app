@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useFetch = (url) => {
+export const useFetch = (url, enabled=true) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -22,7 +22,7 @@ export const useFetch = (url) => {
       }
     }
 
-    if (!url) return;
+    if (!url || !enabled) return;
     getData();
   }, [url]);
 

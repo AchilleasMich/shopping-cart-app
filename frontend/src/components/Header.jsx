@@ -1,14 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import Price from "./ui/Price";
 
 function Header({ cart, total }) {
+  // need location to track where I come from
+  // so I can clear the cart from the order page
+  const location = useLocation();
   const numberOfItems = cart.reduce((acc, c) => acc + c.quantity, 0);
 
   return (
     <header className="flex justify-between items-center bg-gray-100 p-4 shadow-md m-2">
-      <Link to="/" className="flex items-center space-x-2">
+      <Link to="/" className="flex items-center space-x-2" state={{ from: location.pathname }}>
         <h1 className="text-xl md:text-2xl font-bold text-gray-800">Shopping Cart</h1>
       </Link>
 

@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import ProductCard from '../ProductCard';
+import ProductCard from '../ui/Cards/ProductCard';
 import Loading from '../ui/Loading';
 import Error from '../ui/Error';
 import { useShoppingCartContext } from '../../state/ShoppingCartContext.jsx';
 import { ACTIONS } from "../../state/reducers.js";
 import { createCart, updateCart, addItemToCart, removeItemFromCart } from '../../utilities/cart.js';
+import { useLocation } from 'react-router';
 
 function Products(props) {
   const { isLoading, error } = props
   const { state, dispatch } = useShoppingCartContext();
   const { products, cart } = state;
+
+  const location = useLocation();
+  const from = location.state?.from
+  useEffect(() => {
+    if (from === "/order") dispatch({ type: ACTIONS.CLEAR_CART });
+  }, [from, dispatch]);
 
   const addToCart = async (product) => {
     let cartId = state.cartInfo.id;
@@ -40,7 +47,6 @@ function Products(props) {
     return p
   })
 
-  console.log(productsWithCart)
   return (
     <div className="flex justify-center">
       <div className="flex flex-col md:flex-row flex-wrap gap-1 md:gap-2 w-full md:w-fit">
