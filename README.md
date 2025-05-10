@@ -11,7 +11,7 @@ This is a simple shopping cart application built
 
 ## How to Run
 
-1. Clone the repository:
+### Clone the repository
    ```bash
    git clone https://github.com/your-username/shopping-cart-app.git
    cd shopping-cart-app
@@ -19,34 +19,36 @@ This is a simple shopping cart application built
 
 ### Development server
 
-2. Run the backend server
+#### Run the backend server
 
    ```bash
    docker-compose -f docker-compose-dev.yml up -d
    ```
 
-3. Install frontend dependencies:
+#### Install frontend dependencies:
 
    ```bash
    cd /frontend
    npm install
    ```
 
-4. Start the frontend development server:
+#### Start the frontend development server:
+   
    ```bash
    npm run dev
    ```
 
-Alternativly run:
-`bash
-    ./start_dev.sh
-    `
-
-    The service will be available on localhost:5173
+#### Alternativly
+   
+   ```bash
+   ./start_dev.sh
+   ```
+   
+   The service will be available on localhost:5173
 
 ### Production build
 
-    ```bash
-    docker-compose up -d --build
-    ```
-    The service will be available on localhost:8081
+ ```bash
+ docker-compose up -d --build
+ ```   
+The service will be available on localhost:8081
