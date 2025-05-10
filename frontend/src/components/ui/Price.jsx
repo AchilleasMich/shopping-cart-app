@@ -6,7 +6,7 @@ const Price = (props) => {
   if (variant === 'simple') {
     return (
       <div className="font-medium">
-        <span>{text && `${text}:`} ${(price / 100).toFixed(2)}</span>
+        {text && `${text}:`} ${(price / 100).toFixed(2)}
       </div>
     );
   }

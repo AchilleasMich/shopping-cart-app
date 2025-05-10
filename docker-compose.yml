@@ -5,12 +5,16 @@ services:
     container_name: frontend
     expose:
       - "80"
+    networks:
+      - shopping-cart-network
 
   api:
     image: registry.gitlab.com/saysimpler/hiring/fe-sample-api
     container_name: api
     expose:
       - "8080"
+    networks:
+      - shopping-cart-network
 
   nginx:
     image: nginx:alpine
@@ -22,3 +26,8 @@ services:
     depends_on:
       - frontend
       - api
+    networks:
+      - shopping-cart-network
+
+networks:
+    shopping-cart-network:
