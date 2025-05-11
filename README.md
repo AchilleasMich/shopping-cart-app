@@ -20,6 +20,7 @@ This is a simple shopping cart application built
 - No healthcheks to docker-compose files. Could not extent api image to add curl or other tools for health checking
 - No dedicated 404 page
 - No Add/Remove buttons inside the cart
+- Github Copilot was enabled at various points of the development process, mainly to assist with fast unit test implementation and some debugging
 
 
 ## How to Run
