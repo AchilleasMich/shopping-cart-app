@@ -35,11 +35,12 @@ cd shopping-cart-app
 ### Production build
 
 ```bash
-docker-compose up -d --build
+docker-compose up -d
 ```
 
-The service will be available on localhost:8081
-(In case port 8081 is already used in your system, please change it by exporting the following enviromental variable `export SHOPPING_CART_PORT=<your port of choice>`)
+The service will be available on **localhost:8081**
+
+In case port 8081 is already used in your system, please change it by exporting the following enviromental variable `export SHOPPING_CART_PORT=<your port of choice>`
 
 
 ### Development server
@@ -69,8 +70,9 @@ npm run dev
 ./start_dev.sh
 ```
 
-The service will be available on localhost:5173
-(In case port 5173 is already used in your system, please change it by exporting the following enviromental variable `export VITE_DEV_PORT=<your port of choice>`)
+The service will be available on **localhost:5173**
+
+In case port 5173 is already used in your system, please change it by exporting the following enviromental variable `export VITE_DEV_PORT=<your port of choice>`
 
 
 ### Unit tests
