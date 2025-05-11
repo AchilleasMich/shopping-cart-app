@@ -9,8 +9,6 @@ This is a simple shopping cart application built
 - Add, update, and remove items from the cart.
 - View total price and item count in real-time.
 
-## How to Run
-
 ## Assumptions and Known Limitations
 - All price calculations are performed in cents to avoid floating point arithmetic. When required (percentage discounts) a ceil function was used to avoid undercharging
 - Navigation from `/orders` to `/` using the back button does not reset the cart (known issue)
@@ -20,6 +18,9 @@ This is a simple shopping cart application built
 - Error handling is minimal and mediocre
 - Data returned when applying a coupon seem to be wrong. More time to investigate was required
 - No healthcheks to docker-compose files. Could not extent api image to add curl or other tools for health checking
+
+
+## How to Run
 
 ### Clone the repository
 
