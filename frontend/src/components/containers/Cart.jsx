@@ -6,7 +6,7 @@ import { ACTIONS } from "../../state/reducers.js";
 import { useNavigate } from 'react-router';
 import { submitOrder } from '../../utilities/orders.js';
 import Price from '../ui/Price.jsx';
-import Select from '../ui/Select.jsx';
+import Select from '../ui/Select/Select.jsx';
 
 function Cart() {
   const { state, dispatch } = useShoppingCartContext();
@@ -54,7 +54,7 @@ function Cart() {
         <Select
           text="Apply Coupon"
           onChange={handleCouponChange}
-          value={state.cartInfo.coupon}
+          value={state.cartInfo.coupon ?? ""}
           options={couponCodes}
           defaultOption={"Select a coupon"}
         />

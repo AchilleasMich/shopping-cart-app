@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const Select = (props) => {
-  const { text, options, onChange, value, defaultOption } = props
+  const { text, options, onChange, value = "", defaultOption = "" } = props
 
   return (
     <div className="flex flex-col items-end mt-6">
       <div className="flex items-center">
-        <label htmlFor="coupon" className="mr-2 text-gray-700">
+        <label className="mr-2 text-gray-700">
           {text}
         </label>
         <select
@@ -34,10 +34,6 @@ Select.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
   defaultOption: PropTypes.string,
-};
-
-Select.defaultProps = {
-  defaultOption: '-',
 };
 
 export default Select;
