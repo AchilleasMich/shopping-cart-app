@@ -1,35 +1,36 @@
-export const createCart = async () => {
+export const createCart = async (errorCallback) => {
   try {
     const res = await fetch('/api/carts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     });
-
     if (!res.ok) throw new Error('Failed to create cart');
     const location = res.headers.get('Location');
     return location.split("/")[2]
   } catch {
-    console.error("failed")
+    errorCallback()
   }
 }
 
-export const updateCart = async (cartId, newCart) => {
-  const res = await fetch(`/api/carts/${cartId}/`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(newCart) // ✅ send array
-  });
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    console.error(errorText)
-    return []
+export const updateCart = async (cartId, newCart, errorCallback) => {
+  try {
+    const res = await fetch(`/api/carts/${cartId}/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newCart)
+    });
+  
+    if (!res.ok) throw new Error('Failed to update cart');
+  
+    const updatedCart = await res.json();
+    return { data: updatedCart };
+  } catch {
+    console.log("aaaa", errorCallback)
+    errorCallback();
+    return { data: [], error: "Failed to update cart" }
   }
-
-  const updatedCart = await res.json();
-  return updatedCart;
 }
 
 export const addItemToCart = (existingCart, productToAdd) => {

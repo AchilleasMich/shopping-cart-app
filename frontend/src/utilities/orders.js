@@ -1,4 +1,4 @@
-export const submitOrder = async (cartId, coupon) => {
+export const submitOrder = async (cartId, coupon, errorCallback) => {
   const order = coupon ? {
     cart_id: cartId,
     discount_code: coupon,
@@ -15,6 +15,6 @@ export const submitOrder = async (cartId, coupon) => {
     const location = res.headers.get('Location');
     return location.split("/")[2]
   } catch {
-    console.error("failed")
+    errorCallback()
   }
 }

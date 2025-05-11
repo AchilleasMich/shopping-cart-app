@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { submitOrder } from "../../utilities/orders.js";
 import Price from "../ui/Price.jsx";
 import Select from "../ui/Select/Select.jsx";
+import toast from "react-hot-toast";
 
 function Cart() {
   const { state, dispatch } = useShoppingCartContext();
@@ -20,12 +21,13 @@ function Cart() {
   }, [cart, navigate]);
 
   const createOrder = async () => {
-    const orderId = await submitOrder(state.cartInfo.id, state.cartInfo.coupon);
-    // The else is required to avoid instanity
+    const orderId = await submitOrder(
+      state.cartInfo.id,
+      state.cartInfo.coupon,
+      () => toast.error("Failed to place order")
+    );
     if (orderId) {
       navigate("/order", { state: { orderId }, replace: true });
-    } else {
-      navigate("/order");
     }
   };
 
