@@ -12,43 +12,47 @@ This is a simple shopping cart application built
 ## How to Run
 
 ### Clone the repository
-   ```bash
-   git clone https://github.com/your-username/shopping-cart-app.git
-   cd shopping-cart-app
-   ```
+
+```bash
+git clone https://github.com/your-username/shopping-cart-app.git
+cd shopping-cart-app
+```
 
 ### Development server
 
 #### Run the backend server
 
-   ```bash
-   docker-compose -f docker-compose-dev.yml up -d
-   ```
+```bash
+docker-compose -f docker-compose-dev.yml up -d
+```
 
 #### Install frontend dependencies:
 
-   ```bash
-   cd /frontend
-   npm install
-   ```
+```bash
+cd /frontend
+npm install
+```
 
 #### Start the frontend development server:
-   
-   ```bash
-   npm run dev
-   ```
+
+```bash
+npm run dev
+```
 
 #### Alternativly
-   
-   ```bash
-   ./start_dev.sh
-   ```
-   
-   The service will be available on localhost:5173
+
+```bash
+./start_dev.sh
+```
+
+The service will be available on localhost:5173
+(In case port 5173 is already used in your system, please change it by exporting the following enviromental variable `export VITE_DEV_PORT=<your port of choice>`)
 
 ### Production build
 
- ```bash
- docker-compose up -d --build
- ```   
+```bash
+docker-compose up -d --build
+```
+
 The service will be available on localhost:8081
+(In case port 8081 is already used in your system, please change it by exporting the following enviromental variable `export SHOPPING_CART_PORT=<your port of choice>`)

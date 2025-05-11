@@ -20,7 +20,7 @@ services:
     image: nginx:alpine
     container_name: nginx-proxy
     ports:
-      - "8081:80"
+      - "${SHOPPING_CART_PORT:-8081}:80"
     volumes:
       - ./nginx/conf.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
@@ -30,4 +30,4 @@ services:
       - shopping-cart-network
 
 networks:
-    shopping-cart-network:
+  shopping-cart-network:
