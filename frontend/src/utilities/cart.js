@@ -27,7 +27,6 @@ export const updateCart = async (cartId, newCart, errorCallback) => {
     const updatedCart = await res.json();
     return { data: updatedCart };
   } catch {
-    console.log("aaaa", errorCallback)
     errorCallback();
     return { data: [], error: "Failed to update cart" }
   }
