@@ -18,6 +18,7 @@ This is a simple shopping cart application built
 - Error handling is minimal and mediocre
 - Data returned when applying a coupon seem to be wrong. More time to investigate was required
 - No healthcheks to docker-compose files. Could not extent api image to add curl or other tools for health checking
+- No dedicated 404 page
 
 
 ## How to Run
@@ -28,6 +29,17 @@ This is a simple shopping cart application built
 git clone https://github.com/your-username/shopping-cart-app.git
 cd shopping-cart-app
 ```
+
+
+### Production build
+
+```bash
+docker-compose up -d --build
+```
+
+The service will be available on localhost:8081
+(In case port 8081 is already used in your system, please change it by exporting the following enviromental variable `export SHOPPING_CART_PORT=<your port of choice>`)
+
 
 ### Development server
 
@@ -59,11 +71,9 @@ npm run dev
 The service will be available on localhost:5173
 (In case port 5173 is already used in your system, please change it by exporting the following enviromental variable `export VITE_DEV_PORT=<your port of choice>`)
 
-### Production build
 
+### Unit tests
 ```bash
-docker-compose up -d --build
+cd /frontend
+npm run test
 ```
-
-The service will be available on localhost:8081
-(In case port 8081 is already used in your system, please change it by exporting the following enviromental variable `export SHOPPING_CART_PORT=<your port of choice>`)
