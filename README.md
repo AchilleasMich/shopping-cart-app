@@ -11,6 +11,16 @@ This is a simple shopping cart application built
 
 ## How to Run
 
+## Assumptions and Known Limitations
+- All price calculations are performed in cents to avoid floating point arithmetic. When required (percentage discounts) a ceil function was used to avoid undercharging
+- Navigation from `/orders` to `/` using the back button does not reset the cart (known issue)
+- Inconsistent approach to handling requests: GET uses a custom hook (useFetch), while POST/PUT use standalone functions
+- No persistent storage is implemented. Intentional decision to simplify testing by refreshing the page
+- No e2e tests
+- Error handling is minimal and mediocre
+- Data returned when applying a coupon seem to be wrong. More time to investigate was required
+- No healthcheks to docker-compose files. Could not extent api image to add curl or other tools for health checking
+
 ### Clone the repository
 
 ```bash
