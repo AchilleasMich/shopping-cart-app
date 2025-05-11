@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react'
-import Button from '../ui/Buttons/Button.jsx';
-import CartCard from '../ui/Cards/CartCard.jsx';
-import { useShoppingCartContext } from '../../state/ShoppingCartContext.jsx';
+import React, { useEffect } from "react";
+import Button from "../ui/Buttons/Button.jsx";
+import CartCard from "../ui/Cards/CartCard.jsx";
+import { useShoppingCartContext } from "../../state/ShoppingCartContext.jsx";
 import { ACTIONS } from "../../state/reducers.js";
-import { useNavigate } from 'react-router';
-import { submitOrder } from '../../utilities/orders.js';
-import Price from '../ui/Price.jsx';
-import Select from '../ui/Select/Select.jsx';
+import { useNavigate } from "react-router";
+import { submitOrder } from "../../utilities/orders.js";
+import Price from "../ui/Price.jsx";
+import Select from "../ui/Select/Select.jsx";
 
 function Cart() {
   const { state, dispatch } = useShoppingCartContext();
@@ -23,17 +23,17 @@ function Cart() {
     const orderId = await submitOrder(state.cartInfo.id, state.cartInfo.coupon);
     // The else is required to avoid instanity
     if (orderId) {
-      navigate("/order", { state: { orderId } });
+      navigate("/order", { state: { orderId }, replace: true });
     } else {
       navigate("/order");
     }
-  }
+  };
 
-  const handleCouponChange = (e) => 
+  const handleCouponChange = (e) =>
     dispatch({
       type: ACTIONS.APPLY_COUPON,
       payload: e.target.value,
-    })
+    });
 
   const couponCodes = coupons?.map((coupon) => coupon.code);
 
@@ -81,4 +81,4 @@ function Cart() {
   );
 }
 
-export default Cart
+export default Cart;

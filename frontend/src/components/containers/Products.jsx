@@ -1,21 +1,30 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import ProductCard from '../ui/Cards/ProductCard';
-import Loading from '../ui/Loading';
-import Error from '../ui/Error';
-import { useShoppingCartContext } from '../../state/ShoppingCartContext.jsx';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import ProductCard from "../ui/Cards/ProductCard";
+import Loading from "../ui/Loading";
+import Error from "../ui/Error";
+import { useShoppingCartContext } from "../../state/ShoppingCartContext.jsx";
 import { ACTIONS } from "../../state/reducers.js";
-import { createCart, updateCart, addItemToCart, removeItemFromCart } from '../../utilities/cart.js';
-import { useLocation } from 'react-router';
+import {
+  createCart,
+  updateCart,
+  addItemToCart,
+  removeItemFromCart,
+} from "../../utilities/cart.js";
+import { useLocation } from "react-router";
 
 function Products(props) {
-  const { isLoading, error } = props
+  const { isLoading, error } = props;
   const { state, dispatch } = useShoppingCartContext();
   const { products, cart } = state;
 
   const location = useLocation();
-  const from = location.state?.from
+  const from = location.state?.from;
   useEffect(() => {
+    // we can come from /order 3 different ways
+    // 1. hit the continue shopping button
+    // 2. Hit the Shopping cart "logo"
+    // 3. Hit the back button (/cart is skipped)
     if (from === "/order") dispatch({ type: ACTIONS.CLEAR_CART });
   }, [from, dispatch]);
 
@@ -26,26 +35,31 @@ function Products(props) {
       dispatch({ type: ACTIONS.CREATE_CART, payload: cartId });
     }
 
-    const newCart = addItemToCart(state.cart, product)
-    const updatedCart = await updateCart(cartId, newCart)
+    const newCart = addItemToCart(state.cart, product);
+    const updatedCart = await updateCart(cartId, newCart);
     if (updatedCart)
-      dispatch({ type: ACTIONS.ADD_TO_CART, payload: { updatedCart: updatedCart.items, product }})
+      dispatch({
+        type: ACTIONS.ADD_TO_CART,
+        payload: { updatedCart: updatedCart.items, product },
+      });
   };
 
   const removeFromCart = async (product) => {
     const cartId = state.cartInfo.id;
 
-    const newCart = removeItemFromCart(state.cart, product)
-    const updatedCart = await updateCart(cartId, newCart)
+    const newCart = removeItemFromCart(state.cart, product);
+    const updatedCart = await updateCart(cartId, newCart);
     if (updatedCart)
-      dispatch({ type: ACTIONS.REMOVE_FROM_CART, payload: { updatedCart: updatedCart.items, product }})
+      dispatch({
+        type: ACTIONS.REMOVE_FROM_CART,
+        payload: { updatedCart: updatedCart.items, product },
+      });
   };
 
   const productsWithCart = products.map((p) => {
-    if (cart.find(c => c.id === p.id))
-      return { ...p, inCart: true }
-    return p
-  })
+    if (cart.find((c) => c.id === p.id)) return { ...p, inCart: true };
+    return p;
+  });
 
   return (
     <div className="flex justify-center">
@@ -70,11 +84,11 @@ function Products(props) {
 Products.propTypes = {
   isLoading: PropTypes.bool,
   error: PropTypes.string,
-}
+};
 
 Products.defaultProps = {
   isLoading: false,
   error: null,
-}
+};
 
-export default Products
+export default Products;

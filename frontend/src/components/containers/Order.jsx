@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation, useNavigationType } from "react-router";
 import { useFetch } from "../../hooks/useFetch";
 import Button from "../ui/Buttons/Button";
 import Loading from "../ui/Loading";
@@ -18,18 +18,28 @@ export const Order = () => {
     !!orderId
   );
 
-  useEffect(() => {
-    if (!orderId) navigate("/", { replace: true });
-  }, [orderId, navigate]);
-
-  if (isLoading) return <Loading />;
-  if (error) return <Error message={error} />;
-  if (!data) return null;
+  const navigationType = useNavigationType();
 
   const continueShopping = () => {
     dispatch({ type: ACTIONS.CLEAR_CART });
     navigate("/");
   };
+
+  useEffect(() => {
+    if (!orderId) navigate("/", { replace: true });
+  }, [orderId, navigate]);
+
+  // avoid forward button. Only available after initial order
+  // from the main page
+  useEffect(() => {
+    if (navigationType === "POP") {
+      navigate("/");
+    }
+  }, [navigationType]);
+
+  if (isLoading) return <Loading />;
+  if (error) return <Error message={error} />;
+  if (!data) return null;
 
   const adjustedPriceData = {
     ...data,
