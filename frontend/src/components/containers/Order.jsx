@@ -10,10 +10,13 @@ import { ACTIONS } from "../../state/reducers";
 
 export const Order = () => {
   const navigate = useNavigate();
-  const {  dispatch  } = useShoppingCartContext();
+  const { dispatch } = useShoppingCartContext();
   const { state } = useLocation();
   const orderId = state?.orderId;
-  const { data, isLoading, error } = useFetch(`/api/orders/${orderId}`, !!orderId);
+  const { data, isLoading, error } = useFetch(
+    `/api/orders/${orderId}`,
+    !!orderId
+  );
 
   useEffect(() => {
     if (!orderId) navigate("/", { replace: true });
@@ -28,6 +31,17 @@ export const Order = () => {
     navigate("/");
   };
 
+  const adjustedPriceData = {
+    ...data,
+    items: data.items.map((p) => ({
+      ...p,
+      product: {
+        ...p.product,
+        price: Math.ceil(p.product.price * 100),
+      },
+    })),
+  };
+
   return (
     <div className="flex justify-center">
       <div className="transaction-success w-xs md:w-md flex flex-col items-center justify-center mt-5">
@@ -35,7 +49,7 @@ export const Order = () => {
           Transaction Successful!
         </h2>
         <div className="products-list space-y-4 w-full max-w-sm">
-          {data?.items.map((item) => (
+          {adjustedPriceData?.items.map((item) => (
             <OrderCard
               key={item.product.id}
               quantity={item.quantity}
@@ -47,8 +61,10 @@ export const Order = () => {
         <div className="total-amount font-bold text-lg mb-6">
           <h3>Total Amount: ${data.total}</h3>
         </div>
-        <Button fullWidth onClick={continueShopping}>Continue Shopping</Button>
-    </div>
+        <Button fullWidth onClick={continueShopping}>
+          Continue Shopping
+        </Button>
+      </div>
     </div>
   );
 };

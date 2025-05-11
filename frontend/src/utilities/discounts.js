@@ -10,7 +10,7 @@ export const calculateTotal = (cart, coupon = {}) => {
       return total - coupon.amount;
     }
     case "PERCENTAGE": {
-      return  total * ((100 - coupon.amount)/100)
+      return  Math.ceil(total * ((100 - coupon.amount)/100))
     }
     case "BOGO":
       return cart.reduce((acc, c) => {

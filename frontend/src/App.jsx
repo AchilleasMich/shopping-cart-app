@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     if (data) {
-      const products = data.map(p => { return { ...p, price: Math.round(100 * p.price) }})
+      const products = data.map(p => { return { ...p, price: Math.ceil(100 * p.price) }})
       dispatch({ type: ACTIONS.ADD_PRODUCTS, payload: products });
     }
   }, [data]);
