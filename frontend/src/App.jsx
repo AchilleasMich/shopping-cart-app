@@ -9,6 +9,7 @@ import Cart from "./components/containers/Cart";
 import { useShoppingCartContext } from "./state/ShoppingCartContext";
 import Order from "./components/containers/Order";
 import toast, { Toaster } from "react-hot-toast";
+import NotFound from "./components/NotFound";
 
 function App() {
   const { state, dispatch } = useShoppingCartContext();
@@ -50,6 +51,7 @@ function App() {
         />
         <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<Order />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster
         position="bottom-center"
