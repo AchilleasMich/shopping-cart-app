@@ -4,13 +4,16 @@ import { BrowserRouter } from "react-router";
 import "./index.css";
 import App from "./App.jsx";
 import { ShoppingCartContextProvider } from "./state/ShoppingCartContext.jsx";
+import { NavigationContextProvider } from "./state/NavigationContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <ShoppingCartContextProvider>
-        <App />
-      </ShoppingCartContextProvider>
+      <NavigationContextProvider>
+        <ShoppingCartContextProvider>
+          <App />
+        </ShoppingCartContextProvider>
+      </NavigationContextProvider>
     </BrowserRouter>
   </StrictMode>
 );

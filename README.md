@@ -10,6 +10,7 @@ This is a simple shopping cart application built
 - View total price and item count in real-time.
 
 ## Assumptions and Known Limitations
+
 - All price calculations are performed in cents to avoid floating point arithmetic. When required (percentage discounts) a ceil function was used to avoid undercharging
 - Navigation from `/orders` to `/` using the back button does not reset the cart (known issue)
 - Inconsistent approach to handling requests: GET uses a custom hook (useFetch), while POST/PUT use standalone functions
@@ -22,7 +23,6 @@ This is a simple shopping cart application built
 - No Add/Remove buttons inside the cart
 - Github Copilot was enabled at various points of the development process, mainly to assist with fast unit test implementation and some debugging
 
-
 ## How to Run
 
 ### Clone the repository
@@ -31,7 +31,6 @@ This is a simple shopping cart application built
 git clone https://github.com/your-username/shopping-cart-app.git
 cd shopping-cart-app
 ```
-
 
 ### Production build
 
@@ -42,7 +41,6 @@ docker-compose up -d
 The service will be available on **localhost:8081**
 
 In case port 8081 is already used in your system, please change it by exporting the following enviromental variable `export SHOPPING_CART_PORT=<your port of choice>`
-
 
 ### Development server
 
@@ -75,9 +73,16 @@ The service will be available on **localhost:5173**
 
 In case port 5173 is already used in your system, please change it by exporting the following enviromental variable `export VITE_DEV_PORT=<your port of choice>`
 
-
 ### Unit tests
+
 ```bash
 cd /frontend
 npm run test
 ```
+
+## Assumptions and Known Limitations
+
+After the initial submission the following issues have been adressed in branch `fix/after_submission`
+
+- Added a 404 page
+- Back button from the order page now clear cart

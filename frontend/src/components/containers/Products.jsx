@@ -11,22 +11,22 @@ import {
   addItemToCart,
   removeItemFromCart,
 } from "../../utilities/cart.js";
-import { useLocation } from "react-router";
 import toast from "react-hot-toast";
+import { useNavigationContext } from "../../state/NavigationContext.jsx";
 function Products(props) {
   const { isLoading, error } = props;
   const { state, dispatch } = useShoppingCartContext();
   const { products, cart } = state;
 
-  const location = useLocation();
-  const from = location.state?.from;
+  const { previousPath } = useNavigationContext();
+
   useEffect(() => {
     // we can come from /order 3 different ways
     // 1. hit the continue shopping button
     // 2. Hit the Shopping cart "logo"
-    // 3. Hit the back button (/cart is skipped, this is not handled properly)
-    if (from === "/order") dispatch({ type: ACTIONS.CLEAR_CART });
-  }, [from, dispatch]);
+    // 3. Hit the back button (/cart is skipped)
+    if (previousPath === "/order") dispatch({ type: ACTIONS.CLEAR_CART });
+  }, [previousPath, dispatch]);
 
   const addToCart = async (product) => {
     let cartId = state.cartInfo.id;
